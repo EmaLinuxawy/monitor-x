@@ -2,11 +2,9 @@
 
 ## Introduction
 
-Monitor X is a practice for my knowledge to monitor various system metrics developed in Golang.
+Monitor X is a monitoring tool that gets various system metrics, developed in Golang.
 
 ## Features
-
-Monitor X provides real-time insights into various aspects of system performance, including:
 
 - Load Average
 - Total CPU Usage
