@@ -1,17 +1,17 @@
 # Monitor X
 
-## Introduction
-
-Monitor X is a monitoring tool that gets various system metrics, developed in Golang.
+Monitor-X is a system monitoring tool that provides real-time insights into various aspects of system performance, including CPU usage, memory utilization, disk usage, network statistics, and more. Built with Go and termui, it offers a visually appealing and easy-to-navigate terminal-based user interface.
 
 ## Features
 
-- Load Average
-- Total CPU Usage
-- Individual CPU Percentages
-- Memory Usage
+- **CPU Monitoring**: Track CPU usage per core, total CPU usage, and top CPU-consuming processes.
+- **Memory Usage**: Monitor total, used, and free memory in real-time.
+- **Disk Usage**: Keep an eye on disk space utilization.
+- **Network Statistics**: View detailed network interface statistics, including bytes sent/received.
+- **Load Average**: Check system load average over 1, 5, and 15 minutes.
+- **User-friendly Interface**: Navigable terminal-based UI for easy monitoring.
 
-This tool is built to be lightweight, efficient, and easy to integrate into existing monitoring solutions.
+
 
 ## Installation
 
@@ -19,7 +19,7 @@ To install Monitor X, ensure that you have Golang installed on your system. Foll
 
 1. Clone the repository:
 
-   ```shell
+   ```bash
    git clone https://github.com/EmaLinuxawy/monitor-x.git
    ```
 2. Navigate to the cloned directory:
@@ -33,23 +33,20 @@ To install Monitor X, ensure that you have Golang installed on your system. Foll
    go build .
    ```
 
+4. Run the application:
+
+   ```bash
+   ./monitor-x
+   ```
+   
 ## Usage
 
-```bash
-./monitor-x
-```
+After starting Monitor-X, use the following keyboard shortcuts to navigate through the application:
 
-### Functions
+- `q` or `<Ctrl-C>`: Quit the application.
+- `<Up>` and `<Down>`: Scroll through the lists.
+- `<Enter>`: Expand or collapse sections (if applicable).
 
-1. **getLoadAverage** :
-   Retrieves the system's load average, a measure of system activity, giving an idea of how busy the system is.
-2. **getTotalCPUUsage** :
-   Calculates the total CPU usage percentage, providing a quick overview of CPU utilization.
-3. **getCPUPercentages** :
-   Lists the usage percentage of each CPU, helpful for identifying uneven load distribution across CPUs.
-4. **printCPUstats** :
-   Prints detailed CPU statistics in a human-readable format, ideal for logging and monitoring dashboards.
-5. **getMemoryUsed** :
-   Reports the amount of memory currently being used, essential for detecting memory leaks or high memory consumption.
-6. **main** :
-   The entry point of the application, orchestrating the monitoring processes and outputting the data.
+## Contributing
+
+Contributions to Monitor-X are welcome! Please feel free to submit pull requests, report bugs, or suggest features through the [GitHub repository](https://github.com/Emalinuxawy/monitor-x).
