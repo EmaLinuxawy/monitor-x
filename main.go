@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"sync"
 	"time"
 
 	"github.com/emaLinuxawy/monitor-x/uiupdate"
@@ -22,6 +23,16 @@ func main() {
 	uiEvents := ui.PollEvents()
 	ticker := time.NewTicker(time.Second).C
 
+	updateFuncs := []func(*view.View){
+		uiupdate.UpdateCPUData,
+		uiupdate.UpdateTopProcesses,
+		uiupdate.UpdateMemUsage,
+		uiupdate.UpdateDiskUsage,
+		uiupdate.UpdateNetworkStatistics,
+		uiupdate.UpdateLoadAverage,
+		uiupdate.UpdateTotalCPUUsage,
+	}
+
 	for {
 		select {
 		case e := <-uiEvents:
@@ -32,13 +43,16 @@ func main() {
 				v.ResetSize()
 			}
 		case <-ticker:
-			uiupdate.UpdateCPUData(v)
-			uiupdate.UpdateTopProcesses(v)
-			uiupdate.UpdateMemUsage(v)
-			uiupdate.UpdateDiskUsage(v)
-			uiupdate.UpdateNetworkStatistics(v)
-			uiupdate.UpdateLoadAverage(v)
-			uiupdate.UpdateTotalCPUUsage(v)
+			var wg sync.WaitGroup
+			for _, updateFunc := range updateFuncs {
+				wg.Add(1)
+				go func(f func(*view.View)) {
+					defer wg.Done()
+					f(v)
+				}(updateFunc)
+			}
+			wg.Wait()
+
 			v.Render()
 		}
 	}

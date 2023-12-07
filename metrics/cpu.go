@@ -62,8 +62,8 @@ func GetTopProcesses(ctx context.Context) ([]ProcessInfo, error) {
 		return topProcesses[i].CPU > topProcesses[j].CPU
 	})
 
-	if len(topProcesses) > 10 {
-		topProcesses = topProcesses[:10]
+	if len(topProcesses) > 20 {
+		topProcesses = topProcesses[:20]
 	}
 	return topProcesses, nil
 }

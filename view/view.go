@@ -81,7 +81,7 @@ func (v *View) SetLayout() {
 		ui.NewRow(0.5/6, cpuRow...),
 		ui.NewRow(0.5/5, ui.NewCol(0.9/2.6, v.DiskList), ui.NewCol(0.9/2.6, v.MemChart)),
 		ui.NewRow(0.5/5, v.NetworkStats),
-		ui.NewRow(1.0/4, v.ProcessList),
+		ui.NewRow(1.0/3, v.ProcessList),
 	)
 }
 
