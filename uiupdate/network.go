@@ -3,15 +3,12 @@ package uiupdate
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/emaLinuxawy/monitor-x/metrics"
 	"github.com/emaLinuxawy/monitor-x/view"
 )
 
-func UpdateNetworkStatistics(v *view.View) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
+func UpdateNetworkStatistics(ctx context.Context, v *view.View) {
 	networkStats, err := metrics.GetNetworkStatistics(ctx)
 	if err != nil {
 		fmt.Println("Error getting network statistics:", err)

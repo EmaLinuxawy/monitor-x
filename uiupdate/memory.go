@@ -3,15 +3,12 @@ package uiupdate
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/emaLinuxawy/monitor-x/metrics"
 	"github.com/emaLinuxawy/monitor-x/view"
 )
 
-func UpdateMemUsage(v *view.View) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
+func UpdateMemUsage(ctx context.Context, v *view.View) {
 	usage, err := metrics.GetMemoryUsed(ctx)
 	if err != nil {
 		fmt.Println("Error getting memory usage:", err)

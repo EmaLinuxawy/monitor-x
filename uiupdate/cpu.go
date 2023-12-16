@@ -3,7 +3,6 @@ package uiupdate
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/emaLinuxawy/monitor-x/metrics"
 	"github.com/emaLinuxawy/monitor-x/view"
@@ -11,10 +10,7 @@ import (
 	"github.com/shirou/gopsutil/v3/cpu"
 )
 
-func UpdateCPUData(v *view.View) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
+func UpdateCPUData(ctx context.Context, v *view.View) {
 	cpuStats, err := cpu.PercentWithContext(ctx, 0, true)
 	if err != nil {
 		fmt.Println("Error getting CPU stats:", err)
@@ -33,9 +29,7 @@ func UpdateCPUData(v *view.View) {
 		}
 	}
 }
-func UpdateTotalCPUUsage(v *view.View) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
+func UpdateTotalCPUUsage(ctx context.Context, v *view.View) {
 	cpuUsage, err := metrics.GetTotalCPUUsage(ctx)
 	if err != nil {
 		fmt.Println("Error getting total CPU usage:", err)
@@ -44,10 +38,7 @@ func UpdateTotalCPUUsage(v *view.View) {
 	v.CPUUsage.Rows = []string{fmt.Sprintf("%.3f%%\n", cpuUsage)}
 }
 
-func UpdateTopProcesses(v *view.View) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
+func UpdateTopProcesses(ctx context.Context, v *view.View) {
 	processes, err := metrics.GetTopProcesses(ctx)
 	if err != nil {
 		fmt.Println("Error fetching top processes:", err)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"sync"
 	"time"
@@ -23,7 +24,7 @@ func main() {
 	uiEvents := ui.PollEvents()
 	ticker := time.NewTicker(time.Second).C
 
-	updateFuncs := []func(*view.View){
+	updateFuncs := []func(context.Context, *view.View){
 		uiupdate.UpdateCPUData,
 		uiupdate.UpdateTopProcesses,
 		uiupdate.UpdateMemUsage,
@@ -43,15 +44,17 @@ func main() {
 				v.ResetSize()
 			}
 		case <-ticker:
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 			var wg sync.WaitGroup
 			for _, updateFunc := range updateFuncs {
 				wg.Add(1)
-				go func(f func(*view.View)) {
+				go func(f func(context.Context, *view.View)) {
 					defer wg.Done()
-					f(v)
+					f(ctx, v)
 				}(updateFunc)
 			}
 			wg.Wait()
+			cancel()
 
 			v.Render()
 		}
