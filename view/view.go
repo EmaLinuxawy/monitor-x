@@ -74,12 +74,12 @@ func (v *View) SetLayout() {
 
 	cpuRow := make([]interface{}, len(v.CpuChart))
 	for i, chart := range v.CpuChart {
-		cpuRow[i] = ui.NewCol(1.0/float64(len(v.CpuChart)), chart)
+		cpuRow[i] = ui.NewCol(1/float64(len(v.CpuChart)), chart)
 	}
 	v.Grid.Set(
 		ui.NewRow(0.5/6, ui.NewCol(0.9/3.5, v.LoadAvg), ui.NewCol(0.6/5, v.CPUUsage), ui.NewCol(0.9/3.5, v.Help)),
 		ui.NewRow(0.5/6, cpuRow...),
-		ui.NewRow(0.5/5, ui.NewCol(0.9/2.6, v.DiskList), ui.NewCol(0.9/2.6, v.MemChart)),
+		ui.NewRow(0.5/5, ui.NewCol(0.9/2.4, v.DiskList), ui.NewCol(0.9/2.6, v.MemChart)),
 		ui.NewRow(0.5/5, v.NetworkStats),
 		ui.NewRow(1.0/3, v.ProcessList),
 	)

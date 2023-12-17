@@ -21,7 +21,7 @@ func UpdateCPUData(ctx context.Context, v *view.View) {
 			bar := metrics.FormatCPUUsage(cpu)
 			v.CpuChart[i].Text = fmt.Sprintf("%s %.2f%%\n", bar, cpu)
 
-			if cpu > 80 {
+			if cpu > 75 {
 				v.CpuChart[i].TextStyle.Fg = ui.ColorRed
 			} else {
 				v.CpuChart[i].TextStyle.Fg = ui.ColorGreen

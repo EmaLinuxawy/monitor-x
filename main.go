@@ -42,6 +42,10 @@ func main() {
 				return
 			case "<Resize>":
 				v.ResetSize()
+			case "<Up>":
+				v.ProcessList.ScrollUp()
+			case "<Down>":
+				v.ProcessList.ScrollDown()
 			}
 		case <-ticker:
 			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
