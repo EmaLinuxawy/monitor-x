@@ -45,12 +45,31 @@ func UpdateTopProcesses(ctx context.Context, v *view.View) {
 		return
 	}
 
-	var rows []string
-	header := fmt.Sprintf("%-7s %-35s %-15s %-15s", "PID", "APP", "CPU %", "MEM (MB)")
-	rows = append(rows, header)
+	columns := []Column{
+		{"PID", 0},
+		{"APP", 0},
+		{"CPU %", 0},
+		{"MEM (MB)", 0},
+	}
+
+	var rows [][]string
 	for _, p := range processes {
-		row := fmt.Sprintf("%-7d %-35s %-15.2f %-15.2f", p.PID, p.Name, p.CPU, p.Memory)
+		row := []string{
+			fmt.Sprintf("%d", p.PID),
+			p.Name,
+			fmt.Sprintf("%.2f", p.CPU),
+			fmt.Sprintf("%.2f", p.Memory),
+		}
 		rows = append(rows, row)
 	}
-	v.ProcessList.Rows = rows
+
+	CalculateMaxWidth(rows, columns)
+
+	var formattedRows []string
+	formattedRows = append(formattedRows, FormatRow(columns, []string{"PID", "APP", "CPU %", "MEM (MB)"}))
+	for _, row := range rows {
+		formattedRows = append(formattedRows, FormatRow(columns, row))
+	}
+
+	v.ProcessList.Rows = formattedRows
 }

@@ -15,10 +15,28 @@ func UpdateMemUsage(ctx context.Context, v *view.View) {
 		v.MemChart.Title = "Error getting memory usage"
 		return
 	}
-	total := float64(usage.Total) / (1024 * 1024 * 1024)
-	used := float64(usage.Used) / (1024 * 1024 * 1024)
-	free := total - used
-	header := fmt.Sprintf("%-5s | %-5s | %-5s", "Total(GB)", "Used(GB)", "Free(GB)")
-	dataRow := fmt.Sprintf("%-9.2f | %-8.2f | %-6.2f", total, used, free)
-	v.MemChart.Rows = []string{header, dataRow}
+
+	columns := []Column{
+		{"Total", 0},
+		{"Used", 0},
+		{"Free", 0},
+	}
+
+	var rows [][]string
+	row := []string{
+		fmt.Sprintf("%.2f GB", float64(usage.Total)/(1024*1024*1024)),
+		fmt.Sprintf("%.2f GB", float64(usage.Used)/(1024*1024*1024)),
+		fmt.Sprintf("%.2f GB", float64(usage.Total)/(1024*1024*1024)-float64(usage.Used)/(1024*1024*1024)),
+	}
+	rows = append(rows, row)
+
+	CalculateMaxWidth(rows, columns)
+
+	var formattedRows []string
+	formattedRows = append(formattedRows, FormatRow(columns, []string{"Total", "Used", "Free"}))
+	for _, row := range rows {
+		formattedRows = append(formattedRows, FormatRow(columns, row))
+	}
+
+	v.MemChart.Rows = formattedRows
 }

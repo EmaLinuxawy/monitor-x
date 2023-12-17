@@ -15,11 +15,27 @@ func UpdateDiskUsage(ctx context.Context, v *view.View) {
 		v.DiskList.Title = "Error getting disk usage"
 		return
 	}
-	header := fmt.Sprintf("%-7s | %-6s | %-7s", "Total(GB)", "Used(GB)", "Free(GB)")
-	dataRow := fmt.Sprintf("%-9.2f | %-8.2f | %-8.2f",
-		float64(usage.Total)/(1024*1024*1024),
-		float64(usage.Used)/(1024*1024*1024),
-		float64(usage.Free)/(1024*1024*1024))
 
-	v.DiskList.Rows = []string{header, dataRow}
+	columns := []Column{
+		{"Total(GB)", 0},
+		{"Used(GB)", 0},
+		{"Free(GB)", 0},
+	}
+
+	var rows [][]string
+	row := []string{
+		fmt.Sprintf("%.2f GB", float64(usage.Total)/(1024*1024*1024)),
+		fmt.Sprintf("%.2f GB", float64(usage.Used)/(1024*1024*1024)),
+		fmt.Sprintf("%.2f GB", float64(usage.Free)/(1024*1024*1024)),
+	}
+	rows = append(rows, row)
+
+	CalculateMaxWidth(rows, columns)
+
+	var formattedRows []string
+	formattedRows = append(formattedRows, FormatRow(columns, []string{"Total", "Used", "Free"}))
+	for _, row := range rows {
+		formattedRows = append(formattedRows, FormatRow(columns, row))
+	}
+	v.DiskList.Rows = formattedRows
 }

@@ -15,13 +15,30 @@ func UpdateNetworkStatistics(ctx context.Context, v *view.View) {
 		v.NetworkStats.Title = "Error getting network statistics"
 		return
 	}
+	columns := []Column{
+		{"Interface Name", 0},
+		{"Bytes Sent", 0},
+		{"Bytes Received", 0},
+		{"Packets Sent", 0},
+		{"Packets Received", 0},
+	}
 
-	var rows []string
-	header := fmt.Sprintf("%-15s | %-15s | %-15s | %-15s | %-15s", "Interface Name", "Bytes Sent(Gbits)", "Bytes Received(Gbits)", "Packets Sent", "Packets Received")
-	rows = append(rows, header)
+	var rows [][]string
 	for _, stat := range networkStats {
-		row := fmt.Sprintf("%-15s | %-17.3f | %-21.3f | %-15d | %-15d", stat.InterfaceName, float64(stat.BytesSent)*8/1e9, float64(stat.BytesRecv)*8/1e9, stat.PacketsSent, stat.PacketsRecv)
+		row := []string{stat.InterfaceName,
+			fmt.Sprintf("%.2f Gbits", float64(stat.BytesSent)*8/1e9),
+			fmt.Sprintf("%.2f Gbits", float64(stat.BytesRecv)*8/1e9),
+			fmt.Sprintf("%d", stat.PacketsSent),
+			fmt.Sprintf("%d", stat.PacketsRecv),
+		}
 		rows = append(rows, row)
 	}
-	v.NetworkStats.Rows = rows
+
+	CalculateMaxWidth(rows, columns)
+	var formattedRows []string
+	formattedRows = append(formattedRows, FormatRow(columns, []string{"Interface Name", "Bytes Sent", "Bytes Received", "Packets Sent", "Packets Received"}))
+	for _, row := range rows {
+		formattedRows = append(formattedRows, FormatRow(columns, row))
+	}
+	v.NetworkStats.Rows = formattedRows
 }
